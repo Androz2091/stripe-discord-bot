@@ -64,7 +64,7 @@ export const getLifetimePaymentDate = (payments: any[]): null|number => {
     for (const payment of (payments || [])) {
         for (const charge of (payment.charges?.data || [])) {
             if (charge.description.includes(process.env.LIFETIME_INVOICE_LABEL_KEYWORD)) {
-                lifetimeStartDate = charge.created;
+                lifetimeStartDate = charge.created * 1000;
             }
         }
     }
