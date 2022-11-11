@@ -1,0 +1,8 @@
+# TypeScript builds
+dist
+
+# Node
+node_modules
+
+# Env
+.env
