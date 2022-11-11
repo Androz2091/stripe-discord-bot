@@ -34,7 +34,7 @@ export const run: SlashCommandRunFunction = async (interaction) => {
 
     const customerId = await resolveCustomerIdFromEmail(email);
 
-    if (!customerId) return void interaction.followUp(errorEmbed("This email address is not part of our database."));
+    if (!customerId) return void interaction.followUp(errorEmbed("This email address is not in our database."));
     
     const subscriptions = await findSubscriptionsFromCustomerId(customerId);
     const activeSubscriptions = findActiveSubscriptions(subscriptions);
