@@ -26,9 +26,11 @@ const getExpiredEmbed = (daysLeft: 0 | 1 | 2): EmbedBuilder => {
 const makeMemberExpire = async (customer: DiscordCustomer, member: GuildMember) => {
     await Postgres.getRepository(DiscordCustomer).update(customer.id, {
         hadActiveSubscription: false,
+        // @ts-ignore
         firstReminderSentDayCount: null
     });
     member?.roles.remove(process.env.PAYING_ROLE_ID!);
+    member?.roles.remove(process.env.LIFETIME_PAYING_ROLE_ID!);
     (member.guild.channels.cache.get(process.env.LOGS_CHANNEL_ID) as TextChannel).send(`**${member?.user?.tag || 'Unknown#0000'}** (${customer.discordUserId}) has completely lost access. Customer email is ${customer.email}.`);
 }
 
@@ -59,8 +61,15 @@ export const run = async () => {
             if (!customer.hadActiveSubscription || customer.firstReminderSentDayCount) {
                 await Postgres.getRepository(DiscordCustomer).update(customer.id, {
                     hadActiveSubscription: true,
+                    // @ts-ignore
                     firstReminderSentDayCount: null
                 });
+            }
+
+            const member = guild.members.cache.get(customer.discordUserId);
+            if (member) {
+                member.roles.add(process.env.PAYING_ROLE_ID!);
+                if (hasLifetime) member.roles.add(process.env.LIFETIME_PAYING_ROLE_ID!);
             }
 
             continue;

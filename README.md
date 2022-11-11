@@ -35,7 +35,7 @@ All configuration for this template can be made in the `.env` file found in the 
 
 `EMAIL_COMMAND_CHANNEL_ID`: The ID of the channel in which members will enter their Stripe email.
 
-`PAYING_ROLE_ID`: The ID of the role members will get of they pay.
+`PAYING_ROLE_ID`/`LIFETIME_PAYING_ROLE_ID`: The ID of the role members will get of they pay.
 
 `LIFETIME_INVOICE_LABEL_KEYWORD`: The keyword that will be used to detect a lifetime invoice (searching for this keyword in the label).
 

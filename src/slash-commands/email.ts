@@ -54,6 +54,7 @@ export const run: SlashCommandRunFunction = async (interaction) => {
 
     const customer: Partial<DiscordCustomer> = {
         hadActiveSubscription: true,
+        // @ts-ignore
         firstReminderSentDayCount: null,
         email,
         discordUserId: interaction.user.id,
@@ -63,6 +64,7 @@ export const run: SlashCommandRunFunction = async (interaction) => {
     else await Postgres.getRepository(DiscordCustomer).insert(customer);
 
     await (interaction.member as GuildMember).roles.add(process.env.PAYING_ROLE_ID);
+    if (hasLifetime) await (interaction.member as GuildMember).roles.add(process.env.LIFETIME_PAYING_ROLE_ID);
 
     return void interaction.followUp(successEmbed(`Welcome, you are eligible to the exclusive Discord access!`));
     

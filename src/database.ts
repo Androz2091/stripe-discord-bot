@@ -35,7 +35,7 @@ export class DiscordCustomer extends BaseEntity {
     @Column({
         nullable: true
     })
-    firstReminderSentDayCount!: number|null; // 0 = first day, 1 = second day, 2 = third day, null = no reminder sent
+    firstReminderSentDayCount!: number; // 0 = first day, 1 = second day, 2 = third day, null = no reminder sent
 
     @Column({
         default: false,
