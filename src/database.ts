@@ -12,21 +12,40 @@ Resource.validate = validate;
 AdminJS.registerAdapter({ Database, Resource });
 
 @Entity()
-export class User extends BaseEntity {
+export class DiscordCustomer extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
     @Column({
         length: 32
     })
-    userId!: string;
-    
-    @Column()
-    money!: number;
+    discordUserId!: string;
+
+    @Column({
+        nullable: true
+    })
+    email!: string;
+
+    @Column({
+        default: false,
+        nullable: true
+    })
+    hadActiveSubscription!: boolean; // whether the member had an active subscription during last daily check
+
+    @Column({
+        nullable: true
+    })
+    firstReminderSentDayCount!: number|null; // 0 = first day, 1 = second day, 2 = third day, null = no reminder sent
+
+    @Column({
+        default: false,
+        nullable: true
+    })
+    adminAccessEnabled!: boolean;
 
 }
 
-const entities = [User];
+const entities = [DiscordCustomer];
 
 export const Postgres = new DataSource({
     type: 'postgres',
@@ -67,5 +86,5 @@ export const initialize = () => Postgres.initialize().then(async () => {
             console.log(`AdminJS is listening at http://localhost:${process.env.ADMINJS_PORT}`)
         });
     }
-    
+
 });

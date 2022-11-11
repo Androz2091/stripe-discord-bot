@@ -1,10 +1,4 @@
-# Discord Bot Template
-
-Your bot has been delivered! Here is the repository with the source code. As a reminder, here are the features of the bot:
-
-* Feature 1
-* Feature 2
-* Feature 3
+# Stripe Discord Bot
 
 ## Installation
 
@@ -35,75 +29,20 @@ All configuration for this template can be made in the `.env` file found in the 
   
 `ENVIRONMENT:` Can be `ENVIRONMENT` or `PRODUCTION`. Defines whether some scripts or things should be run or not. For example, the database schemas will not be modified in production, even to synchronize them, because we may loose data.
 
+`STRIPE_API_KEY`: Your Stripe account API Key.
+
+`EMAIL_COMMAND_CHANNEL_ID`: The ID of the channel in which members will enter their Stripe email.
+
+`PAYING_ROLE_ID`: The ID of the role members will get of they pay.
+
+`LIFETIME_INVOICE_LABEL_KEYWORD`: The keyword that will be used to detect a lifetime invoice (searching for this keyword in the label).
+
+`STRIPE_PAYMENT_LINK`: The link for the users to buy a new subscription.
+
+`LOGS_CHANNEL_ID`: The ID of the channel used as admin logs.
+
+`SUBSCRIPTION_NAME`: The display name of the subscription you are selling. Ex: `Super Premium`
+
 ## Bugs or questions
 
 If you have any issue or bug with this bot, you can contact me using Discord, `Androz#2091`.
-
-## Detailed installation on Debian 11
-
-### Getting started
-```sh
-sudo apt-get update
-```
-
-### Install tools
-```sh
-sudo apt-get install git gnupg2 wget curl software-properties-common build-essential ffmpeg -y
-```
-
-### Install PostgreSQL
-```sh
-sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-sudo apt-get update
-sudo apt-get -y install postgresql
-```
-
-### Configure PostgreSQL
-```sh
-sudo -u postgres psql
-```
-Commands to run on the PSQL shell:
-```sh
-CREATE DATABASE bot;
-CREATE USER my_bot WITH PASSWORD 'heythere';
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO my_bot;
-```
-
-### Open PostgreSQL connections (optional)
-```sh
-nano /etc/postgresql/14/main/postgresql.conf # listen_adresses = '*'
-nano /etc/postgresql/14/main/pg_hba.conf # host all all 0.0.0.0/0 scram-sha-256
-```
-
-### Install node
-```
-curl -sL https://deb.nodesource.com/setup_18.x | sudo bash -
-sudo apt-get install nodejs -y
-sudo npm i -g pm2 yarn typescript
-```
-
-### Create an account for the bot
-```sh
-adduser bot
-su bot
-```
-
-### Add your GitHub SSH KEY
-```sh
-ssh-keygen -t ed25519 -C "androz2091@gmail.com" # this is an example, replace with your email
-cat .ssh/id_ed25519.pub # add the result at https://github.com/settings/keys
-```
-
-## Clone the repository
-```sh
-git clone git@github.com:Name/Repo
-```
-
-## Finish the installation
-```sh
-cd repo
-yarn
-yarn build
-pm2 start dist/index.js --name bot
-```

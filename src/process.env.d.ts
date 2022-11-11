@@ -24,5 +24,13 @@ declare namespace NodeJS {
         ADMINJS_PORT: number|undefined;
         ADMINJS_COOKIE_HASH: string|undefined;
         ADMINJS_PASSWORD: string|undefined;
+
+        EMAIL_COMMAND_CHANNEL_ID: string;
+        STRIPE_API_KEY: string;
+        PAYING_ROLE_ID: string;
+        LIFETIME_INVOICE_LABEL_KEYWORD: string;
+        STRIPE_PAYMENT_LINK: string;
+        LOGS_CHANNEL_ID: string;
+        SUBSCRIPTION_NAME: string;
     }
 }

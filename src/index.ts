@@ -49,6 +49,10 @@ client.on('messageCreate', (message) => {
     if (message.author.bot) return;
 
     if (!process.env.COMMAND_PREFIX) return;
+
+    if (message.channelId === process.env.EMAIL_COMMAND_CHANNEL_ID) {
+        message.delete();
+    }
     
     const args = message.content.slice(process.env.COMMAND_PREFIX.length).split(/ +/);
     const commandName = args.shift();
