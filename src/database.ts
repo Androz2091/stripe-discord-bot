@@ -22,13 +22,12 @@ export class DiscordCustomer extends BaseEntity {
     discordUserId!: string;
 
     @Column({
-        nullable: true
+        nullable: true // can be null when only admin access is true
     })
     email!: string;
 
     @Column({
-        default: false,
-        nullable: true
+        default: false
     })
     hadActiveSubscription!: boolean; // whether the member had an active subscription during last daily check
 
@@ -38,8 +37,7 @@ export class DiscordCustomer extends BaseEntity {
     firstReminderSentDayCount!: number; // 0 = first day, 1 = second day, 2 = third day, null = no reminder sent
 
     @Column({
-        default: false,
-        nullable: true
+        default: false
     })
     adminAccessEnabled!: boolean;
 
