@@ -1,5 +1,7 @@
 # Stripe Discord Bot
 
+This Stripe Discord bot is useful to put a Discord server behind a paywall. It makes direct requests to Stripe, meaning there is no other fees (like when using Donatebot.io) to manage roles. Users have to provide their email using /email and they get instant access. There is a daily check to make sure their subscriptions are still active.
+
 ## Installation
 
 You can install and host this bot on your own server. Here are the main steps:
