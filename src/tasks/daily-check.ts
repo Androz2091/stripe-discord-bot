@@ -84,7 +84,7 @@ export const run = async () => {
         if (!subscriptions.some((sub: any) => sub.status === 'unpaid')) {
             const member = guild.members.cache.get(customer.discordUserId);
             console.log(`[Daily Check] Unpaid ${customer.email}`);
-            member?.send({ embeds: [getExpiredEmbed(0)] });
+            member?.send({ embeds: [getExpiredEmbed(0)] }).catch(() => {});
             makeMemberExpire(customer, member!, guild);
             continue;
         }
@@ -93,7 +93,7 @@ export const run = async () => {
 
             console.log(`[Daily Check] Sending first reminder to ${customer.email}`);
             const member = guild.members.cache.get(customer.discordUserId);
-            member?.send({ embeds: [getExpiredEmbed(2)] });
+            member?.send({ embeds: [getExpiredEmbed(2)] }).catch(() => {});
             await Postgres.getRepository(DiscordCustomer).update(customer.id, {
                 firstReminderSentDayCount: 2
             });
@@ -104,7 +104,7 @@ export const run = async () => {
 
             console.log(`[Daily Check] Sending second reminder to ${customer.email}`);
             const member = guild.members.cache.get(customer.discordUserId);
-            member?.send({ embeds: [getExpiredEmbed(1)] });
+            member?.send({ embeds: [getExpiredEmbed(1)] }).catch(() => {});
             await Postgres.getRepository(DiscordCustomer).update(customer.id, {
                 firstReminderSentDayCount: 1
             });
@@ -115,7 +115,7 @@ export const run = async () => {
 
             console.log(`[Daily Check] Sending third reminder to ${customer.email}`);
             const member = guild.members.cache.get(customer.discordUserId);
-            member?.send({ embeds: [getExpiredEmbed(0)] });
+            member?.send({ embeds: [getExpiredEmbed(0)] }).catch(() => {});
             makeMemberExpire(customer, member!, guild);
             continue;
         }
