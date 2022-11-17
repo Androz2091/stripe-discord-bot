@@ -78,12 +78,11 @@ export const run = async () => {
             continue;
         }
         
-        // if the user has an unpaid subscription, we do not grant the 2 days grace period
         if (!subscriptions.some((sub: any) => sub.status === 'unpaid')) {
             const member = guild.members.cache.get(customer.discordUserId);
             console.log(`[Daily Check] Unpaid ${customer.email}`);
-            //member?.send({ embeds: [getExpiredEmbed(0)] });
-            //makeMemberExpire(customer, member!);
+            member?.send({ embeds: [getExpiredEmbed(0)] });
+            makeMemberExpire(customer, member!);
             continue;
         }
 
@@ -94,10 +93,10 @@ export const run = async () => {
 
             console.log(`[Daily Check] Sending first reminder to ${customer.email}`);
             const member = guild.members.cache.get(customer.discordUserId);
-            //member?.send({ embeds: [getExpiredEmbed(2)] });
-            //await Postgres.getRepository(DiscordCustomer).update(customer.id, {
-            //    firstReminderSentDayCount: 2
-            //});
+            member?.send({ embeds: [getExpiredEmbed(2)] });
+            await Postgres.getRepository(DiscordCustomer).update(customer.id, {
+                firstReminderSentDayCount: 2
+            });
             continue;
         }
 
@@ -105,19 +104,19 @@ export const run = async () => {
 
             console.log(`[Daily Check] Sending second reminder to ${customer.email}`);
             const member = guild.members.cache.get(customer.discordUserId);
-            //member?.send({ embeds: [getExpiredEmbed(1)] });
-            //await Postgres.getRepository(DiscordCustomer).update(customer.id, {
-            //    firstReminderSentDayCount: 1
-            //});
+            member?.send({ embeds: [getExpiredEmbed(1)] });
+            await Postgres.getRepository(DiscordCustomer).update(customer.id, {
+                firstReminderSentDayCount: 1
+            });
             continue;
         }
 
         if (customer.firstReminderSentDayCount === 1) {
 
             console.log(`[Daily Check] Sending third reminder to ${customer.email}`);
-            //const member = guild.members.cache.get(customer.discordUserId);
-            //member?.send({ embeds: [getExpiredEmbed(0)] });
-            //makeMemberExpire(customer, member!);
+            const member = guild.members.cache.get(customer.discordUserId);
+            member?.send({ embeds: [getExpiredEmbed(0)] });
+            makeMemberExpire(customer, member!);
             continue;
         }
 
