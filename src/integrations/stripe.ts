@@ -1,6 +1,6 @@
 import pQueue from 'p-queue';
 
-const queue = new pQueue({ interval: 1000, intervalCap: 18 });
+const queue = new pQueue({ interval: 1000, intervalCap: 10 });
 
 /**
  * Gets the Stripe customer ID for a given user email
