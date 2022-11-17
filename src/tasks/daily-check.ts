@@ -1,4 +1,4 @@
-import { EmbedBuilder, GuildMember, TextChannel } from "discord.js";
+import { EmbedBuilder, Guild, GuildMember, TextChannel } from "discord.js";
 import { client } from "..";
 import { DiscordCustomer, Postgres } from "../database";
 import { findActiveSubscriptions, findSubscriptionsFromCustomerId, getCustomerPayments, getLifetimePaymentDate, resolveCustomerIdFromEmail } from "../integrations/stripe";
@@ -23,7 +23,7 @@ const getExpiredEmbed = (daysLeft: 0 | 1 | 2): EmbedBuilder => {
  * 3) Remove role
  * 4) Send logs
  */
-const makeMemberExpire = async (customer: DiscordCustomer, member: GuildMember) => {
+const makeMemberExpire = async (customer: DiscordCustomer, member: GuildMember, guild: Guild) => {
     await Postgres.getRepository(DiscordCustomer).update(customer.id, {
         hadActiveSubscription: false,
         // @ts-ignore
@@ -31,7 +31,7 @@ const makeMemberExpire = async (customer: DiscordCustomer, member: GuildMember) 
     });
     member?.roles.remove(process.env.PAYING_ROLE_ID!);
     member?.roles.remove(process.env.LIFETIME_PAYING_ROLE_ID!);
-    (member.guild.channels.cache.get(process.env.LOGS_CHANNEL_ID) as TextChannel).send(`**${member?.user?.tag || 'Unknown#0000'}** (${customer.discordUserId}) has completely lost access. Customer email is ${customer.email}.`);
+    (guild.channels.cache.get(process.env.LOGS_CHANNEL_ID) as TextChannel).send(`**${member?.user?.tag || 'Unknown#0000'}** (${customer.discordUserId}) has completely lost access. Customer email is ${customer.email}.`);
 }
 
 export const run = async () => {
@@ -82,7 +82,7 @@ export const run = async () => {
             const member = guild.members.cache.get(customer.discordUserId);
             console.log(`[Daily Check] Unpaid ${customer.email}`);
             member?.send({ embeds: [getExpiredEmbed(0)] });
-            makeMemberExpire(customer, member!);
+            makeMemberExpire(customer, member!, guild);
             continue;
         }
 
@@ -116,7 +116,7 @@ export const run = async () => {
             console.log(`[Daily Check] Sending third reminder to ${customer.email}`);
             const member = guild.members.cache.get(customer.discordUserId);
             member?.send({ embeds: [getExpiredEmbed(0)] });
-            makeMemberExpire(customer, member!);
+            makeMemberExpire(customer, member!, guild);
             continue;
         }
 
