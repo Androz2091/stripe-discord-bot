@@ -46,7 +46,10 @@ export const run = async () => {
 
         console.log(`[Daily Check] Checking ${customer.email}`);
         const customerId = await resolveCustomerIdFromEmail(customer.email);
-        if (!customerId) return console.log(`[Daily Check] Could not find customer id for ${customer.email}`);
+        if (!customerId) {
+            console.log(`[Daily Check] Could not find customer id for ${customer.email}`);
+            continue;
+        }
 
         const subscriptions = await findSubscriptionsFromCustomerId(customerId);
         const activeSubscriptions = findActiveSubscriptions(subscriptions) || [];
