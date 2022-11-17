@@ -12,14 +12,15 @@ import { loadTasks } from './handlers/tasks';
 export const client = new Client({
     intents: [
         IntentsBitField.Flags.Guilds,
-        IntentsBitField.Flags.GuildMessages
+        IntentsBitField.Flags.GuildMessages,
+        IntentsBitField.Flags.GuildMembers
     ]
 });
 
 const { slashCommands, slashCommandsData } = loadSlashCommands(client);
 const { contextMenus, contextMenusData } = loadContextMenus(client);
 const messageCommands = loadMessageCommands(client);
-loadTasks(client);
+const tasks = loadTasks(client);
 
 synchronizeSlashCommands(client, [...slashCommandsData, ...contextMenusData], {
     debug: true,
@@ -74,6 +75,11 @@ client.on('ready', () => {
         initializeDatabase().then(() => {
             console.log('Database initialized 📦');
         });
+
+        if (process.argv.includes('--sync')) {
+            tasks.tasks.first()?.run();
+        }
+
     } else {
         console.log('Database not initialized, as no keys were specified 📦');
     }
