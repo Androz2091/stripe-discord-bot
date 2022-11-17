@@ -77,6 +77,9 @@ export const run = async () => {
 
             continue;
         }
+
+        // if the customer no had any active subscription, no need to send reminders
+        if (!customer.hadActiveSubscription) continue;
         
         if (!subscriptions.some((sub: any) => sub.status === 'unpaid')) {
             const member = guild.members.cache.get(customer.discordUserId);
@@ -85,9 +88,6 @@ export const run = async () => {
             makeMemberExpire(customer, member!, guild);
             continue;
         }
-
-        // if the customer no had any active subscription, no need to send reminders
-        if (!customer.hadActiveSubscription) continue;
 
         if (!customer.firstReminderSentDayCount) {
 
