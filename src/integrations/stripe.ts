@@ -1,3 +1,7 @@
+import pQueue from 'p-queue';
+
+const queue = new pQueue({ interval: 1000, intervalCap: 18 });
+
 /**
  * Gets the Stripe customer ID for a given user email
  */
@@ -6,19 +10,19 @@ export const resolveCustomerIdFromEmail = async (email: string) => {
     
     if (email.includes('+')) {
         const endPart = email.split('+')[1];
-        const customers = await (await fetch(`https://api.stripe.com/v1/customers/search?query=email~'${endPart}'`, {
+        const customers = await queue.add(async () => await (await fetch(`https://api.stripe.com/v1/customers/search?query=email~'${endPart}'`, {
             headers: {
                 Authorization: `Bearer ${process.env.STRIPE_API_KEY}`
             }
-        })).json();
+        })).json());
         const matchingCustomers = customers.data.filter((c: any) => c.email === email);
         customerData = matchingCustomers[0];
     } else {
-        const customers = await (await fetch(`https://api.stripe.com/v1/customers/search?query=email:'${email}'`, {
+        const customers = await queue.add(async () => await (await fetch(`https://api.stripe.com/v1/customers/search?query=email:'${email}'`, {
             headers: {
                 Authorization: `Bearer ${process.env.STRIPE_API_KEY}`
             }
-        })).json();
+        })).json());
         customerData = customers.data[0];
     }
 
@@ -29,11 +33,11 @@ export const resolveCustomerIdFromEmail = async (email: string) => {
  * Gets all the Stripe subscriptions from a given customer ID
  */
 export const findSubscriptionsFromCustomerId = async (oldCustomerId: string) => {
-    const subscriptions = await (await fetch(`https://api.stripe.com/v1/subscriptions?customer=${oldCustomerId}`, {
+    const subscriptions = await queue.add(async () => await (await fetch(`https://api.stripe.com/v1/subscriptions?customer=${oldCustomerId}`, {
         headers: {
             Authorization: `Bearer ${process.env.STRIPE_API_KEY}`
         }
-    })).json();
+    })).json());
     return subscriptions.data || [];
 }
 
@@ -48,11 +52,11 @@ export const findActiveSubscriptions = (subscriptions: any[]) => {
  * Gets all the Stripe payments from a given customer ID
  */
 export const getCustomerPayments = async (customerId: string) => {
-    const invoices = await (await fetch(`https://api.stripe.com/v1/payment_intents?customer=${customerId}`, {
+    const invoices = await queue.add(async () => await (await fetch(`https://api.stripe.com/v1/payment_intents?customer=${customerId}`, {
         headers: {
             Authorization: `Bearer ${process.env.STRIPE_API_KEY}`
         }
-    })).json();
+    })).json());
     return invoices?.data || [];
 }
 
