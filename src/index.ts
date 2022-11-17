@@ -74,12 +74,11 @@ client.on('ready', () => {
     if (process.env.DB_NAME) {
         initializeDatabase().then(() => {
             console.log('Database initialized 📦');
+
+            if (process.argv.includes('--sync')) {
+                tasks.tasks.first()?.run();
+            }
         });
-
-        if (process.argv.includes('--sync')) {
-            tasks.tasks.first()?.run();
-        }
-
     } else {
         console.log('Database not initialized, as no keys were specified 📦');
     }
