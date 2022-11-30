@@ -31,7 +31,7 @@ const makeMemberExpire = async (customer: DiscordCustomer, member: GuildMember, 
     });
     member?.roles.remove(process.env.PAYING_ROLE_ID!);
     member?.roles.remove(process.env.LIFETIME_PAYING_ROLE_ID!);
-    (guild.channels.cache.get(process.env.LOGS_CHANNEL_ID) as TextChannel).send(`**${member?.user?.tag || 'Unknown#0000'}** (${customer.discordUserId}) has completely lost access. Customer email is ${customer.email}.`);
+    (guild.channels.cache.get(process.env.LOGS_CHANNEL_ID) as TextChannel).send(`**${member?.user?.tag || 'Unknown#0000'}** (${customer.discordUserId}, <@${customer.discordUserId}>) has completely lost access. Customer email is ${customer.email}.`);
 }
 
 export const run = async () => {
