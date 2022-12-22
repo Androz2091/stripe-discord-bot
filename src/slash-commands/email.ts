@@ -4,6 +4,7 @@ import { errorEmbed, successEmbed } from "../util";
 import { DiscordCustomer, Postgres } from "../database";
 import { ApplicationCommandOptionType, CommandInteractionOptionResolver, GuildMember } from "discord.js";
 import { findActiveSubscriptions, findSubscriptionsFromCustomerId, getCustomerPayments, getLifetimePaymentDate, resolveCustomerIdFromEmail } from "../integrations/stripe";
+import { Not } from "typeorm";
 
 export const commands = [
     {
@@ -31,6 +32,13 @@ export const run: SlashCommandRunFunction = async (interaction) => {
     if (!emailRegex.test(email)) {
         return void interaction.followUp(errorEmbed("This email address is not valid and can not be used to access the server."));
     }
+
+    const existingEmailCustomer = await Postgres.getRepository(DiscordCustomer).findOne({
+        where: {
+            email,
+            discordUserId: Not(interaction.user.id)
+        }
+    });
 
     const customerId = await resolveCustomerIdFromEmail(email);
 
