@@ -72,8 +72,8 @@ export const run: SlashCommandRunFunction = async (interaction) => {
     else await Postgres.getRepository(DiscordCustomer).insert(customer);
 
     const member = await interaction.guild?.members.fetch(interaction.user.id)?.catch(() => {});
-    await (member as GuildMember).roles.add(process.env.PAYING_ROLE_ID);
-    if (hasLifetime) await (member as GuildMember).roles.add(process.env.LIFETIME_PAYING_ROLE_ID);
+    await (member as GuildMember)?.roles.add(process.env.PAYING_ROLE_ID);
+    if (hasLifetime) await (member as GuildMember)?.roles.add(process.env.LIFETIME_PAYING_ROLE_ID);
 
     return void interaction.followUp(successEmbed(`Welcome, you are eligible to the exclusive Discord access!`));
     
