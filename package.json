@@ -25,6 +25,7 @@
     "humanize-duration": "^3.27.3",
     "node-fetch": "^2.6.7",
     "p-queue": "^6.6.2",
+    "papaparse": "^5.3.2",
     "pg": "^8.8.0",
     "typeorm": "^0.3.10"
   },

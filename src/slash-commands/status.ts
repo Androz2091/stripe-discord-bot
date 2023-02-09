@@ -21,6 +21,13 @@ export const commands = [
 
 export const run: SlashCommandRunFunction = async (interaction) => {
 
+    if (interaction.channelId !== process.env.STATUS_CHANNEL_ID) {
+        return void interaction.reply({
+            content: `This command can only be used in <#${process.env.SUBSCRIBE_CHANNEL_ID}>. Please go there and try again.`,
+            ephemeral: true
+        });
+    }
+
     const user = interaction.options.getUser("user") || interaction.user;
 
     const discordCustomer = await Postgres.getRepository(DiscordCustomer).findOne({
@@ -53,10 +60,6 @@ export const run: SlashCommandRunFunction = async (interaction) => {
                 value: subscriptions.length > 0 ? subscriptions.map((subscription: any) => {
                     return `${subscription.items.data[0]?.plan.nickname} (${subscription.status === 'active' ? "✅ Active" : ((subscription.cancel_at && subscription.current_period_end > Date.now() / 1000) ? "❌ Cancelled (not expired yet)" : "❌ Cancelled")})`
                 }).join('\n') : "There is no subscription for this account."
-            },
-            {
-                name: 'Lifetime',
-                value: lifetimePaymentDate ? `✅ Lifetime access since ${new Date(lifetimePaymentDate).toDateString()}` : '❌ No lifetime access'
             },
             {
                 name: 'Access given by the admins',

@@ -6,3 +6,7 @@ node_modules
 
 # Env
 .env
+
+# Data
+data.csv
+dump.sql

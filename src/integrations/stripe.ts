@@ -49,6 +49,18 @@ export const findActiveSubscriptions = (subscriptions: any[]) => {
 }
 
 /**
+ * Cancels a subscription
+ */
+export const cancelSubscription = async (subscriptionId: string) => {
+    await queue.add(async () => await (await fetch(`https://api.stripe.com/v1/subscriptions/${subscriptionId}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${process.env.STRIPE_API_KEY}`
+        }
+    })).json());
+}
+
+/**
  * Gets all the Stripe payments from a given customer ID
  */
 export const getCustomerPayments = async (customerId: string) => {

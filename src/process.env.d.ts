@@ -33,6 +33,11 @@ declare namespace NodeJS {
         STRIPE_PAYMENT_LINK: string;
         LOGS_CHANNEL_ID: string;
         SUBSCRIPTION_NAME: string;
+        STRIPE_PAYMENT_LINK: string;
+
+        SUBSCRIBE_CHANNEL_ID: string;
+        CANCEL_CHANNEL_ID: string;
+        STATUS_CHANNEL_ID: string;
 
         SENTRY_API_KEY: string;
     }
