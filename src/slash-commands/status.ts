@@ -37,7 +37,10 @@ export const run: SlashCommandRunFunction = async (interaction) => {
     });
 
     if (!discordCustomer) {
-        return void interaction.reply(errorEmbed(`There is no email linked to your account!`));
+        return void interaction.reply({
+            ephemeral: true,
+            embeds: errorEmbed(`There is no email linked to your account!`).embeds
+        });
     }
 
     const customerId = await resolveCustomerIdFromEmail(discordCustomer.email);
@@ -64,10 +67,10 @@ export const run: SlashCommandRunFunction = async (interaction) => {
                     return `${name} (${subscription.status === 'active' ? "✅ Active" : ((subscription.cancel_at && subscription.current_period_end > Date.now() / 1000) ? "❌ Cancelled (not expired yet)" : "❌ Cancelled")})`
                 }).join('\n') : "There is no subscription for this account."
             },
-            {
+            /*{
                 name: 'Access given by the admins',
                 value: discordCustomer.adminAccessEnabled ? '✅ Access' : '❌ No access'
-            }
+            }*/
         ]);
 
     return void interaction.reply({

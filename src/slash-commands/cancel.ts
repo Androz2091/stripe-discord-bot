@@ -44,7 +44,10 @@ export const run: SlashCommandRunFunction = async (interaction) => {
     });
 
     if (!discordCustomer) {
-        return void interaction.reply(errorEmbed(`There is no email linked to your account!`));
+        return void interaction.reply({
+            ephemeral: true,
+            embeds: errorEmbed(`There is no email linked to your account!`).embeds
+        });
     }
 
     const customerId = await resolveCustomerIdFromEmail(discordCustomer.email);
@@ -55,7 +58,10 @@ export const run: SlashCommandRunFunction = async (interaction) => {
     const cancelled = actives[0];
 
     if (!cancelled) {
-        return void interaction.reply(errorEmbed(`You don't have an active subscription!`));
+        return void interaction.reply({
+            ephemeral: true,
+            embeds: errorEmbed(`You don't have an active subscription!`).embeds
+        });
     }
 
     const confirmEmbed = new EmbedBuilder()
@@ -79,6 +85,7 @@ export const run: SlashCommandRunFunction = async (interaction) => {
     ];
 
     await interaction.reply({
+        ephemeral: true,
         embeds: [confirmEmbed],
         components
     });
@@ -104,6 +111,7 @@ export const run: SlashCommandRunFunction = async (interaction) => {
                 .setColor(process.env.EMBED_COLOR);
 
                 i.reply({
+                    ephemeral: true,
                     embeds: [embed],
                     components: []
                 });

@@ -32,8 +32,26 @@ export const run: SlashCommandRunFunction = async (interaction) => {
 
     const email = (interaction.options as CommandInteractionOptionResolver).getString("email")!;
 
+    const userCustomer = await Postgres.getRepository(DiscordCustomer).findOne({
+        where: {
+            discordUserId: interaction.user.id
+        }
+    });
+
+    if (userCustomer && !email) {
+        return void interaction.reply({
+            ephemeral: true,
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(process.env.EMBED_COLOR)
+                    .setDescription(`Hey **${interaction.user.username}**, you already have an active subscription linked to your account. You can update it by specifying your email again.`)
+            ]
+        });
+    }
+
     if (!email) {
         return void interaction.reply({
+            ephemeral: true,
             embeds: [
                 new EmbedBuilder()
                     .setColor(process.env.EMBED_COLOR)
@@ -46,7 +64,11 @@ export const run: SlashCommandRunFunction = async (interaction) => {
 
     if (!emailRegex.test(email)) {
         return void interaction.reply({
-            embeds: errorEmbed("This email address is not valid and can not be used to access the server.").embeds,
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(process.env.EMBED_COLOR)
+                    .setDescription(`Hey **${interaction.user.username}**, this email is not subscribed yet. You can purchase a new subscription at ${process.env.STRIPE_PAYMENT_LINK} and run this command again.`)
+            ],
             ephemeral: true
         });
     }
@@ -81,12 +103,6 @@ export const run: SlashCommandRunFunction = async (interaction) => {
             ephemeral: true
         });
     }
-
-    const userCustomer = await Postgres.getRepository(DiscordCustomer).findOne({
-        where: {
-            discordUserId: interaction.user.id
-        }
-    });
 
     const customer: Partial<DiscordCustomer> = {
         hadActiveSubscription: true,

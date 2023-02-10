@@ -8,7 +8,7 @@ import { loadContextMenus, loadMessageCommands, loadSlashCommands, synchronizeSl
 
 import { syncSheets } from './integrations/sheets';
 
-import { Client, IntentsBitField } from 'discord.js';
+import { Client, IntentsBitField, PermissionsBitField } from 'discord.js';
 import { errorEmbed } from './util';
 import { loadTasks } from './handlers/tasks';
 export const client = new Client({
@@ -53,7 +53,7 @@ client.on('messageCreate', (message) => {
 
     if (!process.env.COMMAND_PREFIX) return;
 
-    if (message.channelId === process.env.EMAIL_COMMAND_CHANNEL_ID) {
+    if ((message.channelId === process.env.STATUS_CHANNEL_ID || message.channelId === process.env.SUBSCRIBE_CHANNEL_ID || message.channelId === process.env.CANCEL_CHANNEL_ID) && !message.member?.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
         message.delete();
     }
     
