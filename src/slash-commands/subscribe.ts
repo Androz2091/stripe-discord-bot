@@ -90,7 +90,7 @@ export const run: SlashCommandRunFunction = async (interaction) => {
     const customerId = await resolveCustomerIdFromEmail(email);
 
     if (!customerId) return void interaction.reply({
-        embeds: errorEmbed("This email address is not in our database.").embeds,
+        embeds: errorEmbed(`You do not have an active subscription. Please buy one at ${process.env.STRIPE_PAYMENT_LINK} to access the server.`).embeds,
         ephemeral: true
     });
     
