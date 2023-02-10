@@ -23,7 +23,7 @@ export const run: SlashCommandRunFunction = async (interaction) => {
 
     if (interaction.channelId !== process.env.STATUS_CHANNEL_ID) {
         return void interaction.reply({
-            content: `This command can only be used in <#${process.env.SUBSCRIBE_CHANNEL_ID}>. Please go there and try again.`,
+            content: `This command can only be used in <#${process.env.STATUS_CHANNEL_ID}>. Please go there and try again.`,
             ephemeral: true
         });
     }
