@@ -10,3 +10,4 @@ node_modules
 # Data
 data.csv
 dump.sql
+members.json

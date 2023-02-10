@@ -58,7 +58,10 @@ export const run: SlashCommandRunFunction = async (interaction) => {
             {
                 name: 'Subscriptions',
                 value: subscriptions.length > 0 ? subscriptions.map((subscription: any) => {
-                    return `${subscription.items.data[0]?.plan.nickname} (${subscription.status === 'active' ? "✅ Active" : ((subscription.cancel_at && subscription.current_period_end > Date.now() / 1000) ? "❌ Cancelled (not expired yet)" : "❌ Cancelled")})`
+                    const name = subscription.items.data[0]?.plan.id
+                    .replace(/_/g, ' ')
+                    .replace(/^\w|\s\w/g, (l: string) => l.toUpperCase())
+                    return `${name} (${subscription.status === 'active' ? "✅ Active" : ((subscription.cancel_at && subscription.current_period_end > Date.now() / 1000) ? "❌ Cancelled (not expired yet)" : "❌ Cancelled")})`
                 }).join('\n') : "There is no subscription for this account."
             },
             {
