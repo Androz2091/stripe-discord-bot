@@ -14,6 +14,10 @@ You can install and host this bot on your own server. Here are the main steps:
 * Install PM2 or another process manager to keep your bot alive, or run `yarn start`.
 * You are done!
 
+## Bugs or questions
+
+If you have any issue or bug with this bot, you can contact me using Discord, `Androz#2091` or `@androz2091`.
+
 ## Configuration 
 All configuration for this template can be made in the `.env` file found in the root directory. Below will be details about each setting.  
   
@@ -44,7 +48,3 @@ All configuration for this template can be made in the `.env` file found in the 
 `LOGS_CHANNEL_ID`: The ID of the channel used as admin logs.
 
 `SUBSCRIPTION_NAME`: The display name of the subscription you are selling. Ex: `Super Premium`
-
-## Bugs or questions
-
-If you have any issue or bug with this bot, you can contact me using Discord, `Androz#2091`.

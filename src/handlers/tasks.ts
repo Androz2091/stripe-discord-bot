@@ -1,5 +1,4 @@
-import { Client, ApplicationCommand, ApplicationCommandData, ChatInputApplicationCommandData } from "discord.js";
-import { Collection } from '@discordjs/collection';
+import { Client, Collection } from "discord.js";
 import { readdirSync } from "fs";
 import { join } from "path";
 import { CronJob } from "cron";
