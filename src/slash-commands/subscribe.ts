@@ -2,7 +2,7 @@ import { SlashCommandRunFunction } from "../handlers/commands";
 import fetch from 'node-fetch';
 import { errorEmbed, successEmbed } from "../util";
 import { DiscordCustomer, Postgres } from "../database";
-import { ApplicationCommandOptionType, CommandInteractionOptionResolver, EmbedBuilder, GuildMember } from "discord.js";
+import { ApplicationCommandOptionType, CommandInteractionOptionResolver, EmbedBuilder, GuildMember, TextChannel } from "discord.js";
 import { findActiveSubscriptions, findSubscriptionsFromCustomerId, getCustomerPayments, getLifetimePaymentDate, resolveCustomerIdFromEmail } from "../integrations/stripe";
 import { Not } from "typeorm";
 
@@ -117,6 +117,8 @@ export const run: SlashCommandRunFunction = async (interaction) => {
 
     const member = await interaction.guild?.members.fetch(interaction.user.id)?.catch(() => {});
     await (member as GuildMember)?.roles.add(process.env.PAYING_ROLE_ID);
+
+    (member?.guild.channels.cache.get(process.env.LOGS_CHANNEL_ID) as TextChannel).send(`:arrow_upper_right: **${member?.user?.tag || 'Unknown#0000'}** (${customer.discordUserId}, <@${customer.discordUserId}>) has been linked to \`${customer.email}\`.`);
 
     return void interaction.reply({
         ephemeral: true,
