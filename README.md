@@ -2,6 +2,10 @@
 
 This Stripe Discord bot is useful to put a Discord server behind a paywall. It makes direct requests to Stripe, meaning there is no other fees (like when using Donatebot.io) to manage roles. Users have to provide their email using /email and they get instant access. There is a daily check to make sure their subscriptions are still active.
 
+## [Sublyna](https://sublyna.com)
+
+This Stripe Discord Bot will remain **free and open source**. However, hosting and configuring it can be challenging for beginners, and issues may arise if you're not familiar with the setup. Since I receive a lot of questions that I can't always answer individually, I recommend using [Sublyna](https://sublyna.com) — a new service packed with features that lets you turn your community into a paid one in just a few clicks, with low fees.
+
 ## Installation
 
 You can install and host this bot on your own server. Here are the main steps:
